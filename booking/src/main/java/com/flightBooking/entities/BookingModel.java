@@ -3,33 +3,15 @@ package com.flightBooking.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "booking")
-public class Booking {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, insertable = true, updatable = false, unique = true)
+public class BookingModel {
 	private Long id;
 
-	@Column(name = "pnrNumber", nullable = false, insertable = true, updatable = false, unique = true)
 	private String pnr;
-	@Column(name = "travelType")
 	private String type;
 	private Long price;
-	@Column(name = "fromLocation")
 	private String from;
-	@Column(name = "toLocation")
 	private String to;
 	private String flight;
 	private String returnFlight;
@@ -40,11 +22,9 @@ public class Booking {
 	private Date date;
 	private boolean active;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "pnr", nullable = false, insertable = true, updatable = false)
 	private List<Passenger> passengers;
 
-	public Booking() {
+	public BookingModel() {
 
 	}
 

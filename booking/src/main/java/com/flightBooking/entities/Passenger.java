@@ -1,5 +1,7 @@
 package com.flightBooking.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "passenger")
-public class Passenger {
+public class Passenger implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,7 +31,6 @@ public class Passenger {
 	public Passenger() {
 
 	}
-
 
 	public String getName() {
 		return name;
@@ -54,7 +59,6 @@ public class Passenger {
 	public Long getPhone() {
 		return phone;
 	}
-
 
 	public void setPhone(Long phone) {
 		this.phone = phone;

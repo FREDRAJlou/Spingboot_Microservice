@@ -3,6 +3,7 @@ package com.flightBooking.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,10 @@ public class BookingController {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@Autowired
-	KafkaTemplate<String, Booking> bookingProducer;
-	
-	private static final String TOPIC = "kafka_books";
+//	@Autowired
+//	KafkaTemplate<String, Booking> bookingProducer;
+//	
+	private static final String TOPIC = "kafka_bookings";
 
 	@GetMapping("getAllBookings")
 //	@Cacheable(value = "bookings")
@@ -96,7 +97,7 @@ public class BookingController {
 	public Booking saveBooking(@RequestBody Booking booking) throws BookingException {
 		try {
 			Booking savedBooking = this.bookingService.saveBooking(booking);
-			bookingProducer.send(TOPIC, savedBooking);
+//			bookingProducer.send(TOPIC, savedBooking);
 			System.out.print(savedBooking);
 			return savedBooking;
 		} catch (Exception e) {

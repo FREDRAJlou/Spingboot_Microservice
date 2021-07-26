@@ -1,12 +1,15 @@
 package com.flightBooking.services;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.flightBooking.entities.Airline;
+import com.flightBooking.entities.Booking;
 import com.flightBooking.entities.Discount;
 import com.flightBooking.entities.Flight;
 import com.flightBooking.repositories.AirlineRepository;
@@ -22,6 +25,15 @@ public class AirlineService {
 	private FlightRepository flightRepo;
 	@Autowired
 	private DiscountRepository discountRepo;
+
+	public List<Booking> bookingList = new ArrayList<Booking>();
+
+//	@KafkaListener(topics = "kafka_bookings", groupId = "group_id", containerFactory = "userKafkaListenerFactory")
+//	public void consumeJson(Booking book) {
+//		System.out.println("Consumed Booking: " + book);
+//		if (!this.bookingList.contains(book))
+//			this.bookingList.add(book);
+//	}
 
 	public Airline saveAirline(Airline airline) {
 		return airlineRepo.save(airline);
@@ -84,9 +96,9 @@ public class AirlineService {
 	public List<String> getFlightLocs(String locType, String loc) {
 		List<String> flights = Collections.emptyList();
 		if (locType.equalsIgnoreCase("from"))
-			flights = this.flightRepo.findFromLocs(loc.equals("@")?"%":loc);
+			flights = this.flightRepo.findFromLocs(loc.equals("@") ? "%" : loc);
 		if (locType.equalsIgnoreCase("to"))
-			flights = this.flightRepo.findToLocs(loc.equals("@")?"%":loc);
+			flights = this.flightRepo.findToLocs(loc.equals("@") ? "%" : loc);
 		return flights;
 	}
 }

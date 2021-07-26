@@ -1,13 +1,10 @@
 package com.flightBooking.controller;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,19 +29,11 @@ public class AirlineController {
 
 //	@Autowired
 //	private RestTemplate restTemplate;
-	
-	private List<Booking> bookingList;
-	
+
 	@GetMapping("getTodayBookings")
 	public List<Booking> getTodayBookings() {
-		return this.bookingList;
-	}
-	
-	@KafkaListener(topics = "kafka_books", groupId="group_id", containerFactory = "userKafkaListenerFactory")
-	public void consumeJson(Booking book) {
-	    System.out.println("Consumed Booking: " + book);
-	    if(!this.bookingList.contains(book))
-	    this.bookingList.add(book);
+		System.out.print(this.airlineService.bookingList);
+		return this.airlineService.bookingList;
 	}
 
 	@GetMapping("getAllAirlines")
@@ -94,25 +83,25 @@ public class AirlineController {
 	public List<Flight> getFlightByLoc(@PathVariable("query") String query) {
 		String from = "", to = "";
 		String[] params = query.split(",");
-		from = (params.length > 0 && params[0].equals("")) ? "%": params[0] ;
-		to = (params.length > 1 && params[1].equals("")) ?"%" :  params[1] ;
-		System.out.println("query"+query+" ==>"+params+" from: "+from+" ,to: "+to);
+		from = (params.length > 0 && params[0].equals("")) ? "%" : params[0];
+		to = (params.length > 1 && params[1].equals("")) ? "%" : params[1];
+		System.out.println("query" + query + " ==>" + params + " from: " + from + " ,to: " + to);
 		return this.airlineService.getFlightByLoc(from, to);
 	}
-	
+
 	@GetMapping("getFlightLocs/{query}")
 //	@Cacheable(value = "flights")
 	public List<String> getFlightLocs(@PathVariable("query") String query) {
 		String locType = "", loc = "";
 		String[] params = query.split(",");
-		locType = (params.length > 0 && params[0].equals("")) ? "%": params[0] ;
-		loc = (params.length > 1 && params[1].equals("")) ?"%" :  params[1] ;
-		System.out.println("query"+query+" ==>"+params+" locType: "+locType+" ,loc: "+loc);
+		locType = (params.length > 0 && params[0].equals("")) ? "%" : params[0];
+		loc = (params.length > 1 && params[1].equals("")) ? "%" : params[1];
+		System.out.println("query" + query + " ==>" + params + " locType: " + locType + " ,loc: " + loc);
 		return this.airlineService.getFlightLocs(locType, loc).stream().distinct().collect(Collectors.toList());
 	}
 
 	@DeleteMapping("deleteFlight/{id}")
-	@CacheEvict
+//	@CacheEvict
 	public Airline deleteFlight(@PathVariable("id") Long id) {
 		System.out.println("Deleteing Flight " + id);
 		this.airlineService.deleteFlight(id);
@@ -133,20 +122,20 @@ public class AirlineController {
 	public Discount saveDiscount(@RequestBody Discount discount) {
 		return this.airlineService.saveDiscount(discount);
 	}
-	
+
 	@PutMapping("updateDiscount")
 	public Discount updateDiscount(@RequestBody Discount discount) {
 		return this.airlineService.saveDiscount(discount);
 	}
 
 	@PostMapping("saveFlight")
-	@CachePut(value = "flights")
+//	@CachePut(value = "flights")
 	public Flight saveFlight(@RequestBody Flight flight) {
 		return this.airlineService.saveFlight(flight);
 	}
-	
+
 	@PutMapping("updateFlight")
-	@CachePut(value = "flights")
+//	@CachePut(value = "flights")
 	public void updateFlight(@RequestBody Flight flight) {
 		this.airlineService.saveFlight(flight);
 	}
