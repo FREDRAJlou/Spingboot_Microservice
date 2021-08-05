@@ -52,10 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this example
 		String[] allowedUrls = {"/authenticateUser","/authenticate/*/*","/authenticate/register"};
+		String[] allowedAdminUrls = {"/airline/*"};
+		String[] allowedUserUrls = {"/booking/*"};
 		httpSecurity.cors();
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(allowedUrls).permitAll().
+				and().authorizeRequests().antMatchers(allowedAdminUrls).hasRole("ADMIN").
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to

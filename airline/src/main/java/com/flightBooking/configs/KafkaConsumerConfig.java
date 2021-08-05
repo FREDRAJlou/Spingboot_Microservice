@@ -16,9 +16,9 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.flightBooking.entities.Booking;
 
+@Profile({"dev"})
 @EnableKafka
 @Configuration
-@Profile("{prod}")
 public class KafkaConsumerConfig {
 
 	@Bean

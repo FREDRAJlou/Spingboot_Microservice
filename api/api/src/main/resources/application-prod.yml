@@ -8,7 +8,7 @@ spring:
 eureka:
    client:
       serviceUrl:
-         defaultZone: http://ec2-18-119-133-0.us-east-2.compute.amazonaws.com:9091//eureka/
+         defaultZone: http://ec2-18-119-133-251.us-east-2.compute.amazonaws.com:9091/eureka/
 zuul:  
    routes:
      AIRLINESERVICE:    

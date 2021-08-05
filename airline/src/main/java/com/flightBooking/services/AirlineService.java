@@ -28,12 +28,12 @@ public class AirlineService {
 
 	public List<Booking> bookingList = new ArrayList<Booking>();
 
-//	@KafkaListener(topics = "kafka_bookings", groupId = "group_id", containerFactory = "userKafkaListenerFactory")
-//	public void consumeJson(Booking book) {
-//		System.out.println("Consumed Booking: " + book);
-//		if (!this.bookingList.contains(book))
-//			this.bookingList.add(book);
-//	}
+	@KafkaListener(topics = "flight_bookings", groupId = "group_id", containerFactory = "userKafkaListenerFactory")
+	public void consumeJson(Booking book) {
+		System.out.println("Consumed Booking: " + book);
+		if (!this.bookingList.contains(book))
+			this.bookingList.add(book);
+	}
 
 	public Airline saveAirline(Airline airline) {
 		return airlineRepo.save(airline);
